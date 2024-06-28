@@ -10,7 +10,7 @@ def manhattan_distance(x,y):
 
 @pytest.fixture
 def simple2p1f():
-    env = gym.make("Foraging-8x8-2p-1f-v0")
+    env = gym.make("Foraging-8x8-2p-1f-v2")
     _ = env.reset()
     import time
 
@@ -29,7 +29,7 @@ def simple2p1f():
 
 @pytest.fixture
 def simple2p1f_sight1():
-    env = gym.make("Foraging-8x8-2p-1f-v0", sight=1)
+    env = gym.make("Foraging-8x8-2p-1f-v2", sight=1)
     _ = env.reset()
     import time
 
@@ -48,7 +48,7 @@ def simple2p1f_sight1():
 
 @pytest.fixture
 def simple2p1f_sight2():
-    env = gym.make("Foraging-8x8-2p-1f-v0", sight=2)
+    env = gym.make("Foraging-8x8-2p-1f-v2", sight=2)
     _ = env.reset()
     import time
 
@@ -67,10 +67,10 @@ def simple2p1f_sight2():
 
 
 def test_make():
-    env = gym.make("Foraging-8x8-2p-1f-v0")
-    env = gym.make("Foraging-5x5-2p-1f-v0")
-    env = gym.make("Foraging-8x8-3p-1f-v0")
-    env = gym.make("Foraging-8x8-3p-1f-coop-v0")
+    env = gym.make("Foraging-8x8-2p-1f-v2")
+    env = gym.make("Foraging-5x5-2p-1f-v2")
+    env = gym.make("Foraging-8x8-3p-1f-v2")
+    env = gym.make("Foraging-8x8-3p-1f-coop-v2")
 
 
 def test_spaces():
@@ -78,7 +78,7 @@ def test_spaces():
 
 
 def test_seed():
-    env = gym.make("Foraging-8x8-2p-2f-v0")
+    env = gym.make("Foraging-8x8-2p-2f-v2")
     for seed in range(10):
         obs1 = []
         obs2 = []
@@ -94,7 +94,7 @@ def test_seed():
 
 
 def test_food_spawning_0():
-    env = gym.make("Foraging-6x6-2p-2f-v0")
+    env = gym.make("Foraging-6x6-2p-2f-v2")
 
     for i in range(1000):
         _ = env.reset()
@@ -113,7 +113,7 @@ def test_food_spawning_0():
         assert foods[1][1] not in [0, 7]
 
 def test_food_spawning_1():
-    env = gym.make("Foraging-8x8-2p-3f-v0")
+    env = gym.make("Foraging-8x8-2p-3f-v2")
 
     for i in range(1000):
         _ = env.reset()
@@ -139,16 +139,14 @@ def test_reward_1(simple2p1f):
 
 def test_partial_obs_1(simple2p1f_sight1):
     env = simple2p1f_sight1
-    obs = [env._make_obs(player) for player in env.players]
-    obs, _, _, _ = env._make_gym_obs(obs)
+    obs, _, _, _ = env._make_gym_obs()
 
     assert obs[0][-2] == -1
     assert obs[1][-2] == -1
 
 def test_partial_obs_2(simple2p1f_sight2):
     env = simple2p1f_sight2
-    obs = [env._make_obs(player) for player in env.players]
-    obs, _, _, _ = env._make_gym_obs(obs)
+    obs, _, _, _ = env._make_gym_obs()
 
     assert obs[0][-2] > -1
     assert obs[1][-2] > -1
@@ -160,8 +158,7 @@ def test_partial_obs_2(simple2p1f_sight2):
 
 def test_partial_obs_3(simple2p1f):
     env = simple2p1f
-    obs = [env._make_obs(player) for player in env.players]
-    obs, _, _, _ = env._make_gym_obs(obs)
+    obs, _, _, _ = env._make_gym_obs()
 
     assert obs[0][-2] > -1
     assert obs[1][-2] > -1
